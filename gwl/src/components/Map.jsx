@@ -1,4 +1,4 @@
-import  { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import "leaflet/dist/leaflet.css";
 
@@ -9,16 +9,17 @@ import L from "leaflet";
 import "leaflet-draw";
 
 import { saveAs } from "file-saver";
-import CommonButton from "./CommonButton/CommonButton";
-import getStyles from "./Map.styles";
+
+import { useSelector } from "react-redux";
 
 const Map = () => {
-  const classes = getStyles();
   const mapRef = useRef(null);
 
   const drawnItemsRef = useRef(new L.FeatureGroup());
 
   const [geoJsonData, setGeoJsonData] = useState(null);
+
+  const { isLoggedIn } = useSelector((store) => store.login);
 
   useEffect(() => {
     mapRef.current = L.map("map").setView([51.505, -0.09], 13);
@@ -27,6 +28,8 @@ const Map = () => {
       attribution:
         'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
     }).addTo(mapRef.current);
+
+    console.log("isLogged is printing ", isLoggedIn);
 
     const drawControl = new L.Control.Draw({
       draw: {
@@ -48,7 +51,11 @@ const Map = () => {
       },
     });
 
-    mapRef.current.addControl(drawControl);
+    console.log("Now isLogged is true");
+
+    if (isLoggedIn) {
+      mapRef.current.addControl(drawControl);
+    }
 
     mapRef.current.addLayer(drawnItemsRef.current);
 
@@ -56,6 +63,7 @@ const Map = () => {
       const layer = event.layer;
 
       const coordinates = layer
+
         .getLatLngs()[0]
         .map((latLng) => [latLng.lng, latLng.lat]);
 
@@ -79,7 +87,7 @@ const Map = () => {
     return () => {
       mapRef.current.remove();
     };
-  }, []);
+  }, [isLoggedIn]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -104,7 +112,6 @@ const Map = () => {
   };
 
   const handleShare = () => {
-     console.log('ccldsafasd')
     if (geoJsonData) {
       const blob = new Blob([JSON.stringify(geoJsonData)], {
         type: "application/json",
@@ -118,56 +125,27 @@ const Map = () => {
     <div style={{ position: "relative", height: "100vh", width: "100%" }}>
       <div id="map" style={{ height: "100%", width: "100%" }} />
 
-      <div
-        style={{
-          position: "absolute",
-          bottom: "10px",
-          left: "10px",
-          zIndex: "9999",
-        }}
-      >
-      
-        <CommonButton
-          for="files"
-          class="btn"
-          buttonStyles={{
-            borderRadius: "40px",
-            padding: "0px 20px",
-            "@media screen and (max-width:900px)": {
-              padding: "0.5rem 0rem",
-              minWidth: "50%",
-            },
+      {/* {console.log("Insider Return ",isLoggedIn)} */}
+
+      {isLoggedIn && (
+        <div
+          style={{
+            position: "absolute",
+
+            bottom: "10px",
+
+            left: "10px",
+
+            zIndex: "9999",
           }}
         >
-          <label
-            htmlFor="files"
-            style={{ minWidth: "100%", fontSize: "0.8rem" }}
-          >
-            Choose Location
-          </label>
-          <input
-            id="files"
-            type="file"
-            style={{
-              visibility: "hidden",
-              minWidth: "100%",
-              position: "absolute",
-            }}
-            multiple={false}
-            className={classes.imageSelectorStyle}
-            accept=".geojson" 
-            onChange={handleFileChange}
-          />
-        </CommonButton>
+          <input type="file" accept=".geojson" onChange={handleFileChange} />
 
-        <CommonButton onClick={handleShare} disabled={!geoJsonData}>
-          Share
-        </CommonButton>
-
-        {/* <button onClick={handleShare} disabled={!geoJsonData}>
-          Share
-        </button> */}
-      </div>
+          <button onClick={handleShare} disabled={!geoJsonData}>
+            Share
+          </button>
+        </div>
+      )}
     </div>
   );
 };

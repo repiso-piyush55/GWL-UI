@@ -19,12 +19,15 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import UserPool from "./UserPool";
 import { Auth } from "aws-amplify";
+import { useDispatch } from "react-redux";
+import { toggleSideBar } from "../store/slices/LoginSice";
 
-function SignIn() {
+function Login() {
   const [email, setEmail] = useState("");
 
   const [password, setPassword] = useState("");
-
+   
+  const dispatch = useDispatch();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const user = new CognitoUser({ Username: email, Pool: UserPool });
@@ -38,6 +41,7 @@ function SignIn() {
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
         console.log("data = ", data);
+        dispatch(toggleSideBar())
       },
     });
   };
@@ -125,4 +129,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default Login;

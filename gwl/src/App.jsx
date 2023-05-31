@@ -1,5 +1,6 @@
+import { Provider } from "react-redux";
 import { CommonLayout } from "./pages/CommonLayout";
-
+import store from './store/index'
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const arcBlue = "#0B72B9";
@@ -13,13 +14,7 @@ const theme = createTheme({
     },
     type: "light",
     primary: {
-      // light: will be calculated from palette.primary.main,
-
       main: `${arcBlue}`,
-
-      // dark: will be calculated from palette.primary.main,
-
-      // contrastText: will be calculated to contrast with palette.primary.main
     },
 
     secondary: {
@@ -50,9 +45,11 @@ const theme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CommonLayout />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <CommonLayout />
+      </ThemeProvider>
+    </Provider>
   );
 }
 

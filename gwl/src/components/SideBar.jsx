@@ -6,50 +6,14 @@ import {
 
 
 import { sidebarStyle } from "./sideBar.style";
-
-import InboxIcon from "@mui/icons-material/Inbox";
+import { useSelector } from "react-redux";
 import logo from "../assets/logo.png";
-import SignIn from "./Signin";
-// import Login from "./Login";
+import SignIn from "./Login";
+import SideBarLoggedIn from "./SideBarLoggedIn/SideBarLoggedIn";
+import Login from "./Login";
 
 const SideBar = () => {
-  // const sideBarRoutes = [
-  //   {
-  //     routeName: "Login",
-
-  //     routePath: "/",
-  //   },
-
-  //   {
-  //     routeName: "Login",
-
-  //     routePath: "/chat",
-  //   },
-
-  //   {
-  //     routeName: "Login",
-
-  //     routePath: "/profile",
-  //   },
-
-  //   {
-  //     routeName: "Login",
-
-  //     routePath: "/profile",
-  //   },
-
-  //   {
-  //     routeName: "Login",
-
-  //     routePath: "/profile",
-  //   },
-
-  //   {
-  //     routeName: "Login",
-
-  //     routePath: "/profile",
-  //   },
-  // ];
+  const {isLoggedIn} = useSelector(state=> state.login)
   const { classes } = sidebarStyle();
   return (
     <Grid container>
@@ -64,22 +28,7 @@ const SideBar = () => {
         </Grid>
 
         <Grid item>
-          {/* <List>
-            {sideBarRoutes.map((route) => (
-              <ListItem key={route} disablePadding>
-                <ListItemButton className={classes.itemContainer}>
-                  <ListItemIcon>
-                    <InboxIcon />
-                  </ListItemIcon>
-
-                  <ListItemText primary="Inbox" sx={{
-                    color:'primary'
-                  }}/>
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List> */}
-           <SignIn/>
+        {isLoggedIn ?<SideBarLoggedIn/>:<Login/>}
         </Grid>
       </Grid>
       <Grid container item>
