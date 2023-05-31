@@ -22,4 +22,4 @@ const snackbarSlice = createSlice({
 });
 const { setSnackbar } = snackbarSlice.actions;
 export { setSnackbar };
-export default snackbarSlice;
+export default snackbarSlice.reducer;

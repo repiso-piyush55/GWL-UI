@@ -27,13 +27,11 @@ const SideBar = () => {
           <img src={logo} alt="" width="100px" height="100px" />
         </Grid>
 
-        <Grid item>
-        {isLoggedIn ?<SideBarLoggedIn/>:<Login/>}
+        <Grid  item>
+        {true ?<SideBarLoggedIn/>:<Login/>}
         </Grid>
       </Grid>
-      <Grid container item>
-        {/* <Login /> */}
-      </Grid>
+     
     </Grid>
   );
 };

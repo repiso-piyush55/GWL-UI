@@ -2,6 +2,7 @@ import { Provider } from "react-redux";
 import { CommonLayout } from "./pages/CommonLayout";
 import store from './store/index'
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CustomizedSnackBars from "./components/SnackBar/SnackBar";
 
 const arcBlue = "#0B72B9";
 const arcOrange = "#FFBA60";
@@ -47,6 +48,7 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
+        <CustomizedSnackBars/>
         <CommonLayout />
       </ThemeProvider>
     </Provider>

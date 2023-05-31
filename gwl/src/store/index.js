@@ -10,7 +10,7 @@ const store = configureStore({
     reducer: {
 
         login: loginSlice,
-        setSnackBar:snackbarSlice
+        snackBar:snackbarSlice
     }
 
 })
